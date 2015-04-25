@@ -1,4 +1,5 @@
 import sys
+import re
 
 def read_sentences(input_file):
 	"""
@@ -8,26 +9,27 @@ def read_sentences(input_file):
 		lines = f.read().splitlines()
 	return lines
 
+def prepare_string(string):
+    """
+    Eliminates special characters from a string
+    """
+    return re.sub(r'[^\w|\s|\'|\-|\.|\!]', ' ', string) 
+ 
 class pair (object):
     """
     Pair of sentences 
     """
     def __init__ (self, line):
-        self.__data = line.split('\t')
+        self.__data = {}
+        self.__data_list = line.split('\t')
 
-    def similar(self):
-        return self.__data[0]
+        self.__data['similar'] = self.__data_list[0]
+        self.__data['id1'] = self.__data_list[1]
+        self.__data['id2'] = self.__data_list[2]
+        self.__data['string1'] = prepare_string(self.__data_list[3])
+        self.__data['string2'] = prepare_string(self.__data_list[4])
 
-    def id1(self):
-        return self.__data[1]
-
-    def id2(self):
-        return self.__data[2]
-
-    def string1(self):
-        return self.__data[3]
-
-    def string2(self):
-        return self.__data[4]
+    def __getitem__(self, key):
+        return self.__data[key]
 
 
