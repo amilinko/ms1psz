@@ -57,7 +57,10 @@ docs/_build/
 target/
 
 # CoreNLP
-corenlp-python/
+stanford-corenlp-full-2015-01-29/
 
 # Data files
 data/
+
+# zip
+*.zip
