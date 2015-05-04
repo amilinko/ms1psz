@@ -1,5 +1,16 @@
+import os
+import contextlib
 import sys
 import re
+
+@contextlib.contextmanager
+def cd(newPath):
+    """Python snippet to CD into a directory"""
+    savedPath = os.getcwd()
+    os.chdir(newPath)
+    yield
+    os.chdir(savedPath)
+
 
 POS = ['CC', 'DT', 'EX', 'FW', 'IN', 'JJ', 'JJR', 'JJS', 'LS', 'MD', 'NN', 'NNS', 'NNP', 'NNPS', 'PDT', 'POS', 'PRP',
        'PRP$', 'RB', 'RBR', 'RBS', 'RP', 'SYM', 'TO', 'UH', 'VB', 'VBD', 'VBG', 'VBN', 'VBP', 'VBZ', 'WDT', 'WDT', 'WRB']

@@ -7,15 +7,17 @@ from common import common
 
 PRJ_ROOT = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
 
-TRAIN = 'data/input/msr_paraphrase_train.txt'
-TEST = 'data/input/msr_paraphrase_test.txt'
+TRAIN = os.path.join(PRJ_ROOT, 'data/input/msr_paraphrase_train.txt')
+TEST = os.path.join(PRJ_ROOT, 'data/input/msr_paraphrase_test.txt')
 
-TRAIN_TEXT_FILE = 'data/text/train.txt'
-TEST_TEXT_FILE = 'data/text/test.txt'
+TRAIN_TEXT_FILE = os.path.join(PRJ_ROOT, 'data/text/train.txt')
+TEST_TEXT_FILE = os.path.join(PRJ_ROOT, 'data/text/test.txt')
 
-CORENLP_DIR = 'stanford-corenlp-full-2015-01-29/'
+CORENLP_DIR = os.path.join(PRJ_ROOT, 'stanford-corenlp-full-2015-01-29/')
+XML_DIR = os.path.join(PRJ_ROOT, 'data/xml')
 
-CORENLP = 'java -cp "*" -Xmx3g edu.stanford.nlp.pipeline.StanfordCoreNLP -annotators tokenize,ssplit,pos,lemma,ner,parse,dcoref -file input.txt'
+CORENLP_EXEC_ARGS = ['-cp', CORENLP_DIR + '*',  '-Xmx3g' , 'edu.stanford.nlp.pipeline.StanfordCoreNLP', 
+                        '-annotators',  'tokenize,ssplit,pos', '-file']
 
 # EXTRACT
 LINES_TRAIN = common.read_sentences(TRAIN)
@@ -48,5 +50,7 @@ for i in range(1, NUM_PAIRS_TEST):
 with open (TEST_TEXT_FILE, 'w') as f:
     f.write(TEXT_TEST)
 
+with common.cd(XML_DIR): 
+    sh.java(CORENLP_EXEC_ARGS, TEST_TEXT_FILE)
 
 # LOAD
