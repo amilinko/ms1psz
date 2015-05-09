@@ -1,8 +1,9 @@
 import os
 import inspect
 import sys
-import sh
 
+from xmltodict import parse
+from fabricate import *
 from common import common
 
 PRJ_ROOT = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
@@ -17,22 +18,23 @@ CORENLP_DIR = os.path.join(PRJ_ROOT, 'stanford-corenlp-full-2015-01-29/')
 XML_DIR = os.path.join(PRJ_ROOT, 'data/xml')
 
 CORENLP_EXEC_ARGS = ['-cp', CORENLP_DIR + '*',  '-Xmx3g' , 'edu.stanford.nlp.pipeline.StanfordCoreNLP', 
-                        '-annotators',  'tokenize,ssplit,pos', '-file']
+                        '-annotators',  'tokenize,ssplit,pos,parse', '-file']
 
-# EXTRACT
+###########
+# EXTRACT #
+###########
+
 LINES_TRAIN = common.read_sentences(TRAIN)
 LINES_TEST = common.read_sentences(TEST)
 
-# TRANSFORM
+#############
+# TRANSFORM #
+#############
 
+# Create train test file
 PAIRS_TRAIN = []
-PAIRS_TEST = []
-
 TEXT_TRAIN = ''
-TEXT_TEST = '' 
-
 NUM_PAIRS_TRAIN = len(LINES_TRAIN)
-NUM_PAIRS_TEST = len(LINES_TEST)
 
 for i in range(1, NUM_PAIRS_TRAIN):
     NEW_PAIR = common.pair(LINES_TRAIN[i], i-1)
@@ -42,6 +44,11 @@ for i in range(1, NUM_PAIRS_TRAIN):
 with open (TRAIN_TEXT_FILE, 'w') as f:
     f.write(TEXT_TRAIN)
 
+# Create test text file
+PAIRS_TEST = []
+TEXT_TEST = ''
+NUM_PAIRS_TEST = len(LINES_TEST)
+
 for i in range(1, NUM_PAIRS_TEST):
     NEW_PAIR = common.pair(LINES_TEST[i], i-1)
     PAIRS_TEST.append(NEW_PAIR)
@@ -50,7 +57,20 @@ for i in range(1, NUM_PAIRS_TEST):
 with open (TEST_TEXT_FILE, 'w') as f:
     f.write(TEXT_TEST)
 
-with common.cd(XML_DIR): 
-    sh.java(CORENLP_EXEC_ARGS, TEST_TEXT_FILE)
+# Run CoreNLP
+with common.cd(XML_DIR):
+    run('java', CORENLP_EXEC_ARGS,TRAIN_TEXT_FILE)
+    run('java', CORENLP_EXEC_ARGS,TEST_TEXT_FILE)
 
-# LOAD
+# Train dictionary
+with open(os.path.join(XML_DIR,'train.txt.xml'), 'r') as xmlfile:
+    parsed_train = parse(xmlfile)
+
+# Test dictionary
+with open(os.path.join(XML_DIR,'test.txt.xml'), 'r') as xmlfile:
+    parsed_test = parse(xmlfile)
+
+
+########
+# LOAD #
+########
