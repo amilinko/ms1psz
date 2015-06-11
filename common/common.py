@@ -51,4 +51,10 @@ class pair (object):
     def pair_string(self):
         return self.__data['string1'] + '\n' + self.__data['string2'] + '\n'
 
+def diff(st1, st2):
+    """
+    Absolute length difference of two lists
+    """
+    return abs(len(st1)-len(st2))
+
 

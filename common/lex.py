@@ -16,8 +16,11 @@ def lex_sim(s1, s2):
     return float(lcsubstring_length(s1, s2)**2)/(len(s1)*len(s2))
 
 # Shallow parsing
-def lex_max(w1, st1):
-    return 0
+def lex_max(w, st):
+    sim = []
+    for word in st:
+        sim.append(lex_sim(w, word))
+    return max(sim)
 
 def lex_shallow(st1, st2):
     return 0

@@ -12,7 +12,10 @@ def sem_sim(a, b):
 
 # Shallow parsing
 def sem_max(w1, st1):
-    return 0
+    sim = []
+    for word in st:
+        sim.append(sem_sim(w, word))
+    return max(sim)
 
 def sem_shallow(st1, st2):
     return 0
