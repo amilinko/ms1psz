@@ -64,3 +64,6 @@ data/
 
 # zip
 *.zip
+
+# swp
+*.swp

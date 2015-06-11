@@ -70,7 +70,6 @@ with open(os.path.join(XML_DIR,'train.txt.xml'), 'r') as xmlfile:
 with open(os.path.join(XML_DIR,'test.txt.xml'), 'r') as xmlfile:
     parsed_test = parse(xmlfile)
 
-
 ########
 # LOAD #
 ########
