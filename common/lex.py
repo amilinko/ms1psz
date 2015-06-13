@@ -1,3 +1,6 @@
+import sys
+from sim import *
+
 def lcsubstring_length(a, b):
     table = {}
     l = 0
@@ -23,7 +26,19 @@ def lex_max(w, st):
     return max(sim)
 
 def lex_shallow(st1, st2):
-    return 0
+    if type(st1) is not frozenset or type(st2) is not frozenset:
+        print "Parameters must be sets!"
+        sys.exit(-1)
+
+    st = st1.union(st2)
+    v1 = []
+    v2 = []
+
+    for w in st:
+        v1.append(lex_max(w, st1))
+        v2.append(lex_max(w, st2))
+
+    return dotProduct(v1,v2)/(magnitude(v1)*magnitude(v2))
 
 # Deep parsing
 def lex_rel (rel1, rel2):
