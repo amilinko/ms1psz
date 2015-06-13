@@ -46,6 +46,10 @@ def sem_sim(a, b):
 
 # Shallow parsing
 def sim_max(w, st, similarity):
+    if type(st) is not frozenset:
+        print "Parameter st must be a set!"
+        sys.exit(-1)
+
     if similarity == 'lex':
         fun_sim = lex_sim
     elif similarity == 'sem':
