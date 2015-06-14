@@ -18,6 +18,19 @@ def dotProduct (vector1, vector2):
         result = result + vector1[i]*vector2[i]
     return result
 
+# Matrix functions
+def create_matrix(sr1, sr2, similarity):
+    M = []
+    for r1 in sr1:
+        row = []
+        for r2 in sr2:
+            row.append(sim_rel(r1, r2, similarity))
+        M.append(row)
+    return M
+
+def find_beta(M):
+    return 0;
+
 # Lexical similarity
 def lcsubstring_length(a, b):
     table = {}
@@ -90,7 +103,15 @@ def sim_rel (rel1, rel2, similarity):
 
     return fun_sim(rel1['governor'], rel2['governor']) * 2**(fun_sim(rel1['dependent'], rel2['dependent'])-1)
 
-
 def sim_deep (sr1, sr2, similarity):
-    return 0
+    if type(sr1) is not frozenset or type(sr2) is not frozenset:
+        print "Parameters must be sets!"
+        sys.exit(-1)
+
+    n = len(sr1)
+    m = len(sr2)
   
+    M = create_matrix(sr1,sr2,similarity)
+    beta = find_beta (M) 
+ 
+    return sum(beta)*(m+n)/(2*m*n) 
