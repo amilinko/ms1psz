@@ -29,7 +29,28 @@ def create_matrix(sr1, sr2, similarity):
     return M
 
 def find_beta(M):
-    return 0;
+    n = len(M)
+    m = len(M[0])
+
+    beta = []
+
+    while(True):
+        row_max = map(max,M)
+        if (max(row_max)==0):
+            break
+    
+        alfa_max = max(row_max)
+        beta.append(alfa_max)
+
+        i = row_max.index(alfa_max)
+        j = M[i].index(alfa_max)
+
+        for ii in range(n):
+            M[ii][j]=0
+        for jj in range(m):
+            M[i][jj]=0
+                
+    return beta;
 
 # Lexical similarity
 def lcsubstring_length(a, b):
