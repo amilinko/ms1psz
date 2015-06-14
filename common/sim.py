@@ -80,7 +80,16 @@ def sim_shallow(st1, st2, similarity):
 
 # Deep parsing
 def sim_rel (rel1, rel2, similarity):
-    return 0
+    if similarity == 'lex':
+        fun_sim = lex_sim
+    elif similarity == 'sem':
+        fun_sim = sem_sim
+    else:
+        print "Wrong similarity!"
+        sys.exit(-1)
+
+    return fun_sim(rel1['governor'], rel2['governor']) * 2**(fun_sim(rel1['dependent'], rel2['dependent'])-1)
+
 
 def sim_deep (sr1, sr2, similarity):
     return 0
