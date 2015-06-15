@@ -14,6 +14,10 @@ def cd(newPath):
 
 POS = ['CC', 'DT', 'EX', 'FW', 'IN', 'JJ', 'JJR', 'JJS', 'LS', 'MD', 'NN', 'NNS', 'NNP', 'NNPS', 'PDT', 'POS', 'PRP',
        'PRP$', 'RB', 'RBR', 'RBS', 'RP', 'SYM', 'TO', 'UH', 'VB', 'VBD', 'VBG', 'VBN', 'VBP', 'VBZ', 'WDT', 'WDT', 'WRB']
+DEPS = []
+
+NOUNS = ['NN', 'NNS', 'NNP', 'NNPS']
+VERBS = ['VB', 'VBD', 'VBG', 'VBN', 'VBP', 'VBZ'] 
 
 def read_sentences(input_file):
 	"""
