@@ -8,11 +8,14 @@ from common import common
 
 PRJ_ROOT = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
 
-TRAIN = os.path.join(PRJ_ROOT, 'data/input/msr_paraphrase_train.txt')
-TEST = os.path.join(PRJ_ROOT, 'data/input/msr_paraphrase_test.txt')
+INPUT = INPUT = sys.argv[1]
+if os.path.isfile(INPUT) == False:
+	print 'No such file!'
+	sys.exit(-1)
 
-TRAIN_TEXT_FILE = os.path.join(PRJ_ROOT, 'data/text/train.txt')
-TEST_TEXT_FILE = os.path.join(PRJ_ROOT, 'data/text/test.txt')
+INPUT_NAME = os.path.splitext(os.path.basename(INPUT))[0]
+
+INPUT_TEXT_FILE = os.path.join(PRJ_ROOT, 'data/text/' + INPUT_NAME + '.txt')
 
 CORENLP_DIR = os.path.join(PRJ_ROOT, 'stanford-corenlp-full-2015-01-29/')
 XML_DIR = os.path.join(PRJ_ROOT, 'data/xml')
@@ -24,51 +27,34 @@ CORENLP_EXEC_ARGS = ['-cp', CORENLP_DIR + '*',  '-Xmx3g' , 'edu.stanford.nlp.pip
 # EXTRACT #
 ###########
 
-LINES_TRAIN = common.read_sentences(TRAIN)
-LINES_TEST = common.read_sentences(TEST)
+LINES = common.read_sentences(INPUT)
 
 #############
 # TRANSFORM #
 #############
 
-# Create train test file
-PAIRS_TRAIN = []
-TEXT_TRAIN = ''
-NUM_PAIRS_TRAIN = len(LINES_TRAIN)
+# Create text file
+PAIRS= []
+TEXT= ''
+NUM_PAIRS= len(LINES)
 
-for i in range(1, NUM_PAIRS_TRAIN):
-    NEW_PAIR = common.pair(LINES_TRAIN[i], i-1)
-    PAIRS_TRAIN.append(NEW_PAIR)
-    TEXT_TRAIN = TEXT_TRAIN + NEW_PAIR.pair_string()
+for i in range(1, NUM_PAIRS):
+    NEW_PAIR = common.pair(LINES[i], i-1)
+    PAIRS.append(NEW_PAIR)
+    TEXT = TEXT + NEW_PAIR.pair_string()
 
-with open (TRAIN_TEXT_FILE, 'w') as f:
-    f.write(TEXT_TRAIN)
+with open (INPUT_TEXT_FILE, 'w') as f:
+    f.write(TEXT)
 
-# Create test text file
-PAIRS_TEST = []
-TEXT_TEST = ''
-NUM_PAIRS_TEST = len(LINES_TEST)
-
-for i in range(1, NUM_PAIRS_TEST):
-    NEW_PAIR = common.pair(LINES_TEST[i], i-1)
-    PAIRS_TEST.append(NEW_PAIR)
-    TEXT_TEST = TEXT_TEST + NEW_PAIR.pair_string()
-
-with open (TEST_TEXT_FILE, 'w') as f:
-    f.write(TEXT_TEST)
 
 # Run CoreNLP
 with common.cd(XML_DIR):
-    run('java', CORENLP_EXEC_ARGS,TRAIN_TEXT_FILE)
-    run('java', CORENLP_EXEC_ARGS,TEST_TEXT_FILE)
+    run('java', CORENLP_EXEC_ARGS,INPUT_TEXT_FILE)
 
-# Train dictionary
-with open(os.path.join(XML_DIR,'train.txt.xml'), 'r') as xmlfile:
-    parsed_train = parse(xmlfile)
+# Input dictionary
+with open(os.path.join(XML_DIR, INPUT_NAME + '.txt.xml'), 'r') as xmlfile:
+    parsed = parse(xmlfile)
 
-# Test dictionary
-with open(os.path.join(XML_DIR,'test.txt.xml'), 'r') as xmlfile:
-    parsed_test = parse(xmlfile)
 
 ########
 # LOAD #
