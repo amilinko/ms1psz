@@ -14,7 +14,10 @@ def cd(newPath):
 
 POS = ['CC', 'DT', 'EX', 'FW', 'IN', 'JJ', 'JJR', 'JJS', 'LS', 'MD', 'NN', 'NNS', 'NNP', 'NNPS', 'PDT', 'POS', 'PRP',
        'PRP$', 'RB', 'RBR', 'RBS', 'RP', 'SYM', 'TO', 'UH', 'VB', 'VBD', 'VBG', 'VBN', 'VBP', 'VBZ', 'WDT', 'WDT', 'WRB']
-DEPS = []
+
+DEPS = ['auxpass', 'cop', 'conj', 'cc', 'nsubj', 'csubj', 'dobj', 'iobj', 'pobj', 'attr', 'ccomp', 'xcomp', 'mark', 'rel',
+		'acomp', 'agent', 'ref', 'expl', 'advcl', 'purpcl', 'tmod', 'rcmod', 'amod', 'infmod', 'partmod', 'num',
+		'number', 'appos', 'advmod', 'neg', 'poss', 'possessive', 'prt', 'det', 'prep', 'xsubj']
 
 NOUNS = ['NN', 'NNS', 'NNP', 'NNPS']
 VERBS = ['VB', 'VBD', 'VBG', 'VBN', 'VBP', 'VBZ'] 
@@ -47,13 +50,43 @@ class pair (object):
         self.__data['id2'] = self.__data_list[2]
         self.__data['string1'] = prepare_string(self.__data_list[3]) + '.'
         self.__data['string2'] = prepare_string(self.__data_list[4]) + '.'
-
         
+        for pos in POS:
+            self.__data[pos] = []
+            self.__data[pos].append([])
+            self.__data[pos].append([])
+
+        for dep in DEPS:
+            self.__data[dep] = []
+            self.__data[dep].append([])
+            self.__data[dep].append([])
+
     def __getitem__(self, key):
         return self.__data[key]
 
     def pair_string(self):
         return self.__data['string1'] + '\n' + self.__data['string2'] + '\n'
+
+    def pos (self, tokens1, tokens2):
+        for t in tokens1:
+            if t['POS'] in POS:
+                self.__data[t['POS']][0].append(t['word'])
+        
+        for t in tokens2:
+            if t['POS'] in POS:
+                self.__data[t['POS']][1].append(t['word'])
+
+    def deps (self, deps1, deps2):
+        for ds in deps1:
+            for d in ds['dep']:
+                if d['@type'] in DEPS:
+                    self.__data[d['@type']][0].append({'governor':d['governor']['#text'], 'dependent':d['dependent']['#text']})
+
+        for ds in deps2:
+            for d in ds['dep']:
+                if d['@type'] in DEPS:
+                    self.__data[d['@type']][1].append({'governor':d['governor']['#text'], 'dependent':d['dependent']['#text']})
+
 
 def diff(st1, st2):
     """

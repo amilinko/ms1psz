@@ -5,6 +5,7 @@ import sys
 from xmltodict import parse
 from fabricate import *
 from common import common
+from common.common import POS 
 
 PRJ_ROOT = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
 
@@ -59,3 +60,16 @@ with open(os.path.join(XML_DIR, INPUT_NAME + '.txt.xml'), 'r') as xmlfile:
 ########
 # LOAD #
 ########
+
+SENTENCES = parsed['root']['document']['sentences']['sentence']
+
+for i in range(NUM_PAIRS-1):
+    TOKENS1 = SENTENCES[2*i]['tokens']['token']
+    DEPS1 = SENTENCES[2*i]['dependencies']
+
+    TOKENS2 = SENTENCES[2*i+1]['tokens']['token']
+    DEPS2 = SENTENCES[2*i+1]['dependencies']
+
+    PAIRS[i].pos(TOKENS1, TOKENS2)
+    PAIRS[i].deps(DEPS1, DEPS2)
+
