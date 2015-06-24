@@ -80,12 +80,12 @@ class pair (object):
         for ds in deps1:
             for d in ds['dep']:
                 if d['@type'] in DEPS:
-                    self.__data[d['@type']][0].append({'governor':d['governor']['#text'], 'dependent':d['dependent']['#text']})
+                    self.__data[d['@type']][0].append((d['governor']['#text'], d['dependent']['#text']))
 
         for ds in deps2:
             for d in ds['dep']:
                 if d['@type'] in DEPS:
-                    self.__data[d['@type']][1].append({'governor':d['governor']['#text'], 'dependent':d['dependent']['#text']})
+                    self.__data[d['@type']][1].append((d['governor']['#text'], d['dependent']['#text']))
 
 
 def diff(st1, st2):

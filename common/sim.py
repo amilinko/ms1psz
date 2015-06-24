@@ -122,7 +122,7 @@ def sim_rel (rel1, rel2, similarity):
         print "Wrong similarity!"
         sys.exit(-1)
 
-    return fun_sim(rel1['governor'], rel2['governor']) * 2**(fun_sim(rel1['dependent'], rel2['dependent'])-1)
+    return fun_sim(rel1[0], rel2[0]) * 2**(fun_sim(rel1[1], rel2[1])-1)
 
 def sim_deep (sr1, sr2, similarity):
     if type(sr1) is not frozenset or type(sr2) is not frozenset:
