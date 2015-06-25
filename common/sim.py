@@ -92,6 +92,9 @@ def sim_max(w, st, similarity):
         print "Wrong similarity!"
         sys.exit(-1)
 
+    if len(st) == 0:
+        return 0
+
     sim = []
     for word in st:
         sim.append(fun_sim(w, word))
@@ -103,12 +106,18 @@ def sim_shallow(st1, st2, similarity):
         sys.exit(-1)
 
     st = st1.union(st2)
+    if len(st) == 0:
+        return 0
+
     v1 = []
     v2 = []
 
     for w in st:
         v1.append(sim_max(w, st1, similarity))
         v2.append(sim_max(w, st2, similarity))
+
+    if (magnitude(v1) == 0 or magnitude(v2) == 0):
+        return 0
 
     return dotProduct(v1,v2)/(magnitude(v1)*magnitude(v2))
 

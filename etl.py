@@ -1,15 +1,15 @@
 import os
 import inspect
 import sys
+import arff
 
 from xmltodict import parse
 from fabricate import *
-from common import common
-from common.common import POS 
+from common import common, sim
 
 PRJ_ROOT = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
 
-INPUT = INPUT = sys.argv[1]
+INPUT = sys.argv[1]
 if os.path.isfile(INPUT) == False:
 	print 'No such file!'
 	sys.exit(-1)
@@ -73,3 +73,50 @@ for i in range(NUM_PAIRS-1):
     PAIRS[i].pos(TOKENS1, TOKENS2)
     PAIRS[i].deps(DEPS1, DEPS2)
 
+RELATION = 'Short sentence similarity'
+ATTRIBUTES = []
+DATA = []
+
+# Listing attributes and setting data
+
+ATTRIBUTES.append(('similar', ['yes', 'no']))
+
+for i in range(len(PAIRS)):
+
+    if PAIRS[i]['similar'] == '1':
+        DATA.append(['yes'])
+    else:
+        DATA.append(['no'])
+
+# Shallow parsing
+
+for pos in common.POS:
+    ATTRIBUTES.append(("diff_Tag_" + pos, 'NUMERIC'))
+    for i in range(len(PAIRS)):
+        DATA[i].append(common.diff(PAIRS[i][pos][0], PAIRS[i][pos][1]))
+
+for noun in common.NOUNS:
+    ATTRIBUTES.append(("semSim_Tag_" + noun, 'NUMERIC'))
+    for i in range(len(PAIRS)):
+        DATA[i].append(sim.sim_shallow(frozenset(PAIRS[i][noun][0]), frozenset(PAIRS[i][noun][1]), 'sem'))
+
+for verb in common.VERBS:
+    ATTRIBUTES.append(("semSim_Tag_" + verb, 'NUMERIC'))
+    for i in range(len(PAIRS)):
+        DATA[i].append(sim.sim_shallow(frozenset(PAIRS[i][verb][0]), frozenset(PAIRS[i][verb][1]), 'sem'))
+
+for pos in common.POS:
+    ATTRIBUTES.append(("lexSim_Tag_" + pos, 'NUMERIC'))
+    for i in range(len(PAIRS)):
+        DATA[i].append(sim.sim_shallow(frozenset(PAIRS[i][pos][0]), frozenset(PAIRS[i][pos][1]), 'lex'))
+
+
+# Write to arff file
+
+arff_obj = {
+    'relation':'Short sentence similarity!',
+    'attributes': ATTRIBUTES,
+    'data': DATA,
+}
+
+print arff.dumps(arff_obj)
