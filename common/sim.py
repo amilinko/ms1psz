@@ -71,8 +71,8 @@ def lex_sim(s1, s2):
 
 # Semantical similarity
 def sem_sim(a, b):
-    x = wn.synsets(a)
-    y = wn.synsets(b)
+    x = wn.synsets(a.decode("utf8"))
+    y = wn.synsets(b.decode("utf8"))
     if len(x) == 0 or  len(y) == 0:
         return lex_sim(a,b)
     res = x[0].path_similarity(y[0])

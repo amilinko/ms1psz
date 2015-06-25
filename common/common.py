@@ -65,7 +65,7 @@ class pair (object):
         return self.__data[key]
 
     def pair_string(self):
-        return self.__data['string1'] + '.\n' + self.__data['string2'] + '.\n'
+        return self.__data['string1'] + ' .\n' + self.__data['string2'] + ' .\n'
 
     def pos (self, tokens1, tokens2):
         for t in tokens1:
