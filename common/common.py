@@ -48,8 +48,8 @@ class pair (object):
         self.__data['similar'] = self.__data_list[0]
         self.__data['id1'] = self.__data_list[1]
         self.__data['id2'] = self.__data_list[2]
-        self.__data['string1'] = prepare_string(self.__data_list[3]) + '.'
-        self.__data['string2'] = prepare_string(self.__data_list[4]) + '.'
+        self.__data['string1'] = prepare_string(self.__data_list[3])
+        self.__data['string2'] = prepare_string(self.__data_list[4])
         
         for pos in POS:
             self.__data[pos] = []
@@ -65,7 +65,7 @@ class pair (object):
         return self.__data[key]
 
     def pair_string(self):
-        return self.__data['string1'] + '\n' + self.__data['string2'] + '\n'
+        return self.__data['string1'] + '.\n' + self.__data['string2'] + '.\n'
 
     def pos (self, tokens1, tokens2):
         for t in tokens1:

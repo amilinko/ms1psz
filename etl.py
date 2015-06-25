@@ -155,6 +155,13 @@ for dep in common.DEPS:
 
 # General attributes 
 
+ATTRIBUTES.append(("diff_All", 'NUMERIC'))
+ATTRIBUTES.append(("overallLexsim", 'NUMERIC'))
+
+for i in range(len(PAIRS)):
+    DATA[i].append(common.diff(PAIRS[i]['string1'].split(), PAIRS[i]['string2'].split()))
+    DATA[i].append(sim.sim_shallow(frozenset(PAIRS[i]['string1'].split()), frozenset(PAIRS[i]['string2'].split()), 'lex'))
+
 # Write to arff file
 
 arff_obj = {
