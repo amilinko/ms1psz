@@ -119,7 +119,7 @@ def sim_shallow(st1, st2, similarity):
     if (magnitude(v1) == 0 or magnitude(v2) == 0):
         return 0
 
-    return dotProduct(v1,v2)/(magnitude(v1)*magnitude(v2))
+    return float(dotProduct(v1,v2))/(magnitude(v1)*magnitude(v2))
 
 # Deep parsing
 def sim_rel (rel1, rel2, similarity):

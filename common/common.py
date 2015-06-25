@@ -70,22 +70,22 @@ class pair (object):
     def pos (self, tokens1, tokens2):
         for t in tokens1:
             if t['POS'] in POS:
-                self.__data[t['POS']][0].append(t['word'])
+                self.__data[t['POS']][0].append(t['word'].encode('utf-8'))
         
         for t in tokens2:
             if t['POS'] in POS:
-                self.__data[t['POS']][1].append(t['word'])
+                self.__data[t['POS']][1].append(t['word'].encode('utf-8'))
 
     def deps (self, deps1, deps2):
         for ds in deps1:
             for d in ds['dep']:
                 if d['@type'] in DEPS:
-                    self.__data[d['@type']][0].append((d['governor']['#text'], d['dependent']['#text']))
+                    self.__data[d['@type']][0].append((d['governor']['#text'].encode('utf-8'), d['dependent']['#text'].encode('utf-8')))
 
         for ds in deps2:
             for d in ds['dep']:
                 if d['@type'] in DEPS:
-                    self.__data[d['@type']][1].append((d['governor']['#text'], d['dependent']['#text']))
+                    self.__data[d['@type']][1].append((d['governor']['#text'].encode('utf-8'), d['dependent']['#text'].encode('utf-8')))
 
 
 def diff(st1, st2):

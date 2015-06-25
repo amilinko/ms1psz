@@ -110,6 +110,36 @@ for pos in common.POS:
     for i in range(len(PAIRS)):
         DATA[i].append(sim.sim_shallow(frozenset(PAIRS[i][pos][0]), frozenset(PAIRS[i][pos][1]), 'lex'))
 
+ATTRIBUTES.append(('diffNouns', 'NUMERIC'))
+ATTRIBUTES.append(('semSimNouns', 'NUMERIC'))
+ATTRIBUTES.append(('lexSimNouns', 'NUMERIC'))
+
+ATTRIBUTES.append(('diffVerbs', 'NUMERIC'))
+ATTRIBUTES.append(('semSimVerbs', 'NUMERIC'))
+ATTRIBUTES.append(('lexSimVerbs', 'NUMERIC'))
+
+for i in range(len(PAIRS)):
+    nouns0 = []
+    nouns1 = []
+
+    verbs0 = []
+    verbs1 = []
+
+    for n in common.NOUNS:
+        nouns0 = nouns0 + PAIRS[i][n][0]
+        nouns1 = nouns1 + PAIRS[i][n][1]
+
+    for v in common.VERBS:
+        verbs0 = verbs0 + PAIRS[i][v][0]
+        verbs1 = verbs1 + PAIRS[i][v][1]
+
+    DATA[i].append(common.diff(nouns0, nouns1))
+    DATA[i].append(sim.sim_shallow(frozenset(nouns0), frozenset(nouns1), 'sem'))
+    DATA[i].append(sim.sim_shallow(frozenset(nouns0), frozenset(nouns1), 'lex'))
+
+    DATA[i].append(common.diff(verbs0, verbs1))
+    DATA[i].append(sim.sim_shallow(frozenset(verbs0), frozenset(verbs1), 'sem'))
+    DATA[i].append(sim.sim_shallow(frozenset(verbs0), frozenset(verbs1), 'lex'))
 
 # Write to arff file
 
