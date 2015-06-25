@@ -140,7 +140,10 @@ def sim_deep (sr1, sr2, similarity):
 
     n = len(sr1)
     m = len(sr2)
-  
+ 
+    if (n==0 or m==0):
+        return 0
+ 
     M = create_matrix(sr1,sr2,similarity)
     beta = find_beta (M) 
  

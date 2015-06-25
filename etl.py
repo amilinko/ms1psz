@@ -141,6 +141,20 @@ for i in range(len(PAIRS)):
     DATA[i].append(sim.sim_shallow(frozenset(verbs0), frozenset(verbs1), 'sem'))
     DATA[i].append(sim.sim_shallow(frozenset(verbs0), frozenset(verbs1), 'lex'))
 
+# Deep parsing
+
+for dep in common.DEPS:
+    ATTRIBUTES.append(("diff_Dep_" + dep, 'NUMERIC'))
+    ATTRIBUTES.append(("semSim_Dep_" + dep, 'NUMERIC'))
+    ATTRIBUTES.append(("lexSim_Dep_" + dep, 'NUMERIC'))
+
+    for i in range(len(PAIRS)):
+        DATA[i].append(common.diff(PAIRS[i][dep][0], PAIRS[i][dep][1]))
+        DATA[i].append(sim.sim_deep(frozenset(PAIRS[i][dep][0]), frozenset(PAIRS[i][dep][1]), 'sem'))
+        DATA[i].append(sim.sim_deep(frozenset(PAIRS[i][dep][0]), frozenset(PAIRS[i][dep][1]), 'lex'))
+
+# General attributes 
+
 # Write to arff file
 
 arff_obj = {

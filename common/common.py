@@ -13,7 +13,7 @@ def cd(newPath):
 
 
 POS = ['CC', 'DT', 'EX', 'FW', 'IN', 'JJ', 'JJR', 'JJS', 'LS', 'MD', 'NN', 'NNS', 'NNP', 'NNPS', 'PDT', 'POS', 'PRP',
-       'PRP$', 'RB', 'RBR', 'RBS', 'RP', 'SYM', 'TO', 'UH', 'VB', 'VBD', 'VBG', 'VBN', 'VBP', 'VBZ', 'WDT', 'WDT', 'WRB']
+       'PRP$', 'RB', 'RBR', 'RBS', 'RP', 'SYM', 'TO', 'UH', 'VB', 'VBD', 'VBG', 'VBN', 'VBP', 'VBZ', 'WDT', 'WRB']
 
 DEPS = ['auxpass', 'cop', 'conj', 'cc', 'nsubj', 'csubj', 'dobj', 'iobj', 'pobj', 'attr', 'ccomp', 'xcomp', 'mark', 'rel',
 		'acomp', 'agent', 'ref', 'expl', 'advcl', 'purpcl', 'tmod', 'rcmod', 'amod', 'infmod', 'partmod', 'num',
