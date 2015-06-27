@@ -119,27 +119,14 @@ ATTRIBUTES.append(('semSimVerbs', 'NUMERIC'))
 ATTRIBUTES.append(('lexSimVerbs', 'NUMERIC'))
 
 for i in range(len(PAIRS)):
-    nouns0 = []
-    nouns1 = []
+    
+    DATA[i].append(common.diff(PAIRS[i]['nouns'][0], PAIRS[i]['nouns'][1]))
+    DATA[i].append(sim.sim_shallow(frozenset(PAIRS[i]['nouns'][0]), frozenset(PAIRS[i]['nouns'][1]), 'sem'))
+    DATA[i].append(sim.sim_shallow(frozenset(PAIRS[i]['nouns'][0]), frozenset(PAIRS[i]['nouns'][1]), 'lex'))
 
-    verbs0 = []
-    verbs1 = []
-
-    for n in common.NOUNS:
-        nouns0 = nouns0 + PAIRS[i][n][0]
-        nouns1 = nouns1 + PAIRS[i][n][1]
-
-    for v in common.VERBS:
-        verbs0 = verbs0 + PAIRS[i][v][0]
-        verbs1 = verbs1 + PAIRS[i][v][1]
-
-    DATA[i].append(common.diff(nouns0, nouns1))
-    DATA[i].append(sim.sim_shallow(frozenset(nouns0), frozenset(nouns1), 'sem'))
-    DATA[i].append(sim.sim_shallow(frozenset(nouns0), frozenset(nouns1), 'lex'))
-
-    DATA[i].append(common.diff(verbs0, verbs1))
-    DATA[i].append(sim.sim_shallow(frozenset(verbs0), frozenset(verbs1), 'sem'))
-    DATA[i].append(sim.sim_shallow(frozenset(verbs0), frozenset(verbs1), 'lex'))
+    DATA[i].append(common.diff(PAIRS[i]['verbs'][0], PAIRS[i]['verbs'][1]))
+    DATA[i].append(sim.sim_shallow(frozenset(PAIRS[i]['verbs'][0]), frozenset(PAIRS[i]['verbs'][1]), 'sem'))
+    DATA[i].append(sim.sim_shallow(frozenset(PAIRS[i]['verbs'][0]), frozenset(PAIRS[i]['verbs'][1]), 'lex'))
 
 # Deep parsing
 

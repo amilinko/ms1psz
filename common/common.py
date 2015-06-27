@@ -61,6 +61,15 @@ class pair (object):
             self.__data[dep].append([])
             self.__data[dep].append([])
 
+        self.__data['nouns'] = []
+        self.__data['nouns'].append([])
+        self.__data['nouns'].append([])
+
+        self.__data['verbs'] = []
+        self.__data['verbs'].append([])
+        self.__data['verbs'].append([])
+
+
     def __getitem__(self, key):
         return self.__data[key]
 
@@ -75,6 +84,14 @@ class pair (object):
         for t in tokens2:
             if t['POS'] in POS:
                 self.__data[t['POS']][1].append(t['word'].encode('utf-8'))
+
+        for n in NOUNS:
+            self.__data['nouns'][0] = self.__data['nouns'][0] + self.__data[n][0]
+            self.__data['nouns'][1] = self.__data['nouns'][1] + self.__data[n][1]
+
+        for v in VERBS:
+            self.__data['verbs'][0] = self.__data['verbs'][0] + self.__data[v][0]
+            self.__data['verbs'][1] = self.__data['verbs'][1] + self.__data[v][1]
 
     def deps (self, deps1, deps2):
         for ds in deps1:
