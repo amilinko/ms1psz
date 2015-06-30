@@ -34,10 +34,6 @@ CORENLP_EXEC_ARGS = ['-cp', CORENLP_DIR + '*',  '-Xmx3g' , 'edu.stanford.nlp.pip
 
 LINES = common.read_sentences(INPUT)
 
-#############
-# TRANSFORM #
-#############
-
 # Create text file
 PAIRS= []
 TEXT= ''
@@ -51,6 +47,9 @@ for i in range(1, NUM_PAIRS):
 with open (INPUT_TEXT_FILE, 'w') as f:
     f.write(TEXT)
 
+#############
+# TRANSFORM #
+#############
 
 # Run CoreNLP
 with common.cd(TMP_DIR):
@@ -59,11 +58,6 @@ with common.cd(TMP_DIR):
 # Input dictionary
 with open(INPUT_XML_FILE, 'r') as xmlfile:
     parsed = parse(xmlfile)
-
-
-########
-# LOAD #
-########
 
 SENTENCES = parsed['root']['document']['sentences']['sentence']
 
@@ -76,6 +70,10 @@ for i in range(NUM_PAIRS-1):
 
     PAIRS[i].pos(TOKENS1, TOKENS2)
     PAIRS[i].deps(DEPS1, DEPS2)
+
+########
+# LOAD #
+########
 
 RELATION = 'Short sentence similarity'
 ATTRIBUTES = []
@@ -156,7 +154,7 @@ for i in range(len(PAIRS)):
 # Write to arff file
 
 arff_obj = {
-    'relation':'Short sentence similarity!',
+    'relation': RELATION,
     'attributes': ATTRIBUTES,
     'data': DATA,
 }

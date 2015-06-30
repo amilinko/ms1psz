@@ -1,4 +1,4 @@
-@RELATION "Short sentence similarity!"
+@RELATION "Short sentence similarity"
 
 @ATTRIBUTE similar {yes, no}
 @ATTRIBUTE diff_Tag_CC NUMERIC
