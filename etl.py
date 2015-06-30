@@ -6,21 +6,25 @@ import arff
 from xmltodict import parse
 from fabricate import *
 from common import common, sim
+from sh import mkdir, java
 
 PRJ_ROOT = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
+TMP_DIR = os.path.join(PRJ_ROOT, '.temp')
 
 INPUT = sys.argv[1]
 if os.path.isfile(INPUT) == False:
 	print 'No such file!'
 	sys.exit(-1)
 
+if os.path.isdir(TMP_DIR) == False:
+    mkdir('-p', TMP_DIR)
+ 
 INPUT_NAME = os.path.splitext(os.path.basename(INPUT))[0]
-
-INPUT_TEXT_FILE = os.path.join(PRJ_ROOT, 'data/text/' + INPUT_NAME + '.txt')
+INPUT_TEXT_FILE = os.path.join(TMP_DIR, INPUT_NAME + '.txt')
+INPUT_XML_FILE = os.path.join(TMP_DIR, INPUT_NAME + '.txt.xml')
+INPUT_ARFF_FILE = os.path.join(PRJ_ROOT, INPUT_NAME + '.arff')
 
 CORENLP_DIR = os.path.join(PRJ_ROOT, 'stanford-corenlp-full-2015-01-29/')
-XML_DIR = os.path.join(PRJ_ROOT, 'data/xml')
-
 CORENLP_EXEC_ARGS = ['-cp', CORENLP_DIR + '*',  '-Xmx3g' , 'edu.stanford.nlp.pipeline.StanfordCoreNLP', 
                         '-annotators',  'tokenize,ssplit,pos,parse', '-file']
 
@@ -49,11 +53,11 @@ with open (INPUT_TEXT_FILE, 'w') as f:
 
 
 # Run CoreNLP
-with common.cd(XML_DIR):
+with common.cd(TMP_DIR):
     run('java', CORENLP_EXEC_ARGS,INPUT_TEXT_FILE)
 
 # Input dictionary
-with open(os.path.join(XML_DIR, INPUT_NAME + '.txt.xml'), 'r') as xmlfile:
+with open(INPUT_XML_FILE, 'r') as xmlfile:
     parsed = parse(xmlfile)
 
 
@@ -157,4 +161,5 @@ arff_obj = {
     'data': DATA,
 }
 
-print arff.dumps(arff_obj)
+with open (INPUT_ARFF_FILE, 'w') as f:
+    f.write(arff.dumps(arff_obj))

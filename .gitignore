@@ -67,3 +67,6 @@ data/
 
 # swp
 *.swp
+
+# temp
+.temp/
