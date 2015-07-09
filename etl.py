@@ -151,6 +151,17 @@ for i in range(len(PAIRS)):
     DATA[i].append(common.diff(PAIRS[i]['string1'].split(), PAIRS[i]['string2'].split()))
     DATA[i].append(sim.sim_shallow(frozenset(PAIRS[i]['string1'].split()), frozenset(PAIRS[i]['string2'].split()), 'lex'))
 
+# Additional attributes
+
+ATTRIBUTES.append(("same_Nouns", 'NUMERIC'))
+ATTRIBUTES.append(("same_Verbs", 'NUMERIC'))
+ATTRIBUTES.append(("same_All", 'NUMERIC'))
+
+for i in range(len(PAIRS)):
+    DATA[i].append(len(frozenset(PAIRS[i]['nouns'][0]).intersection(frozenset(PAIRS[i]['nouns'][1]))))
+    DATA[i].append(len(frozenset(PAIRS[i]['verbs'][0]).intersection(frozenset(PAIRS[i]['verbs'][1]))))
+    DATA[i].append(len(frozenset(PAIRS[i]['string1'].split()).intersection(frozenset(PAIRS[i]['string2'].split()))))
+
 # Write to arff file
 
 arff_obj = {
